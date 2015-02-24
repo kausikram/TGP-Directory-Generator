@@ -1,3 +1,4 @@
 *.pyc
 output/
 profile_pictures/
+config.py
