@@ -13,8 +13,6 @@ from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import config
 
-NAME_COLOR = "#2BB673"
-BODY_COLOR = "#000000"
 
 PIX_CONVERTER = 12 #12dpmm
 MARGIN = 15 #15 10
@@ -22,10 +20,10 @@ BOX = 50  #50 30
 
 class ProfilePage(object):
     def __init__(self):
-        self.img = Image.open("a53.png")
+        self.img = Image.open(config.BACKGROUND_IMAGE_PATH)
         self.draw = ImageDraw.Draw(self.img)
-        self.font = ImageFont.truetype("AbrilFatface-Regular.ttf", 14 * 300 / 72 )
-        self.font_body = ImageFont.truetype("GothamMedium.otf", 10 * 300 / 72 )
+        self.font = ImageFont.truetype(config.NAME_FONT, 14 * 300 / 72 )
+        self.font_body = ImageFont.truetype(config.BODY_FONT, 10 * 300 / 72 )
 
     def run(self, lst):
         for i in enumerate(lst):
@@ -38,9 +36,9 @@ class ProfilePage(object):
         print item[0]
         offset = box_number* BOX + (box_number+1) * MARGIN
         self.draw_image(item[4],self.get_pix(10),self.get_pix(offset))
-        self.draw.text((self.get_pix(40),self.get_pix(offset)), item[0], fill=NAME_COLOR, font=self.font)
-        self.draw.text((self.get_pix(40),self.get_pix(offset + 10)), item[1], fill=BODY_COLOR, font=self.font_body)
-        self.draw.text((self.get_pix(40),self.get_pix(offset + 15)), item[2], fill=BODY_COLOR, font=self.font_body)
+        self.draw.text((self.get_pix(40),self.get_pix(offset)), item[0], fill=config.NAME_COLOR, font=self.font)
+        self.draw.text((self.get_pix(40),self.get_pix(offset + 10)), item[1], fill=config.BODY_COLOR, font=self.font_body)
+        self.draw.text((self.get_pix(40),self.get_pix(offset + 15)), item[2], fill=config.BODY_COLOR, font=self.font_body)
         self.draw_multi_line(self.get_pix(40),self.get_pix(offset + 20),item[3])
 
     def save(self, page_number):
@@ -64,7 +62,7 @@ class ProfilePage(object):
         margin = start_x
         offset = start_y
         for line in textwrap.wrap(text, width=50):
-            self.draw.text((margin, offset), line, font=self.font_body, fill=BODY_COLOR)
+            self.draw.text((margin, offset), line, font=self.font_body, fill=config.BODY_COLOR)
             offset += self.font_body.getsize(line)[1]
 
 def main():

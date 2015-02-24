@@ -15,3 +15,10 @@ NAME_FIELD = ""
 EMAIL_FIELD = ""
 TWITTER_FIELD = ""
 DESCRIPTION_FIELD = ""
+
+NAME_FONT = "AbrilFatface-Regular.ttf"
+BODY_FONT = "GothamMedium.otf"
+NAME_COLOR = "#2BB673"
+BODY_COLOR = "#000000"
+
+BACKGROUND_IMAGE_PATH="a5.png"
