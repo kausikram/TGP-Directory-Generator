@@ -9,26 +9,23 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
-import urllib2
+import config
+import requests
 
-def main():
-    with open("data.csv") as f:
-        data = f.read()
-    lines = data.split("\n")
-
-    for l in lines[1:]:
-        items = l.split(",")
-        url_complex = items[1]
-        try:
-            url = url_complex.split("(")[1].split(")")[0]
-            ext = url_complex.split("(")[0].split(".")[1]
-            name = items[0]
-            path = name + "." + ext
-            r = urllib2.urlopen(url)
-            with open("profile_pictures/"+path, 'wb') as f:
-                f.write(r.read())
-        except Exception:
-            print items
+def fetch_data():
+    r = requests.get(config.COUNT_URL,params=config.PARAMS,auth=config.AUTH)
+    total_count = int(r.json()["EntryCount"])
+    start = 0
+    final_data = []
+    while start < total_count:
+        run_config = {"pageStart":start,"pageSize":100}
+        run_config.update(config.PARAMS)
+        r = requests.get(config.DATA_URL,params=run_config,auth=config.AUTH)
+        data = r.json()["Entries"]
+        print len(data)
+        final_data.extend(data)
+        start += 100
+    return final_data
 
 if __name__ == '__main__':
-    main()
+    print fetch_data()

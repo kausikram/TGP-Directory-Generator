@@ -9,20 +9,19 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
-import urllib2
-from test import ProfilePage
+import config
+from fetch import fetch_data
+from profile_builder import ProfilePage
+from get_images import get_file_name_for_entry
 
 def main():
-    with open("data2.csv") as f:
-        data = f.read()
-    lines = data.split("\n")
-
+    data = fetch_data()
     counter = 1
     dumper = []
     page = 1
-    for l in lines[1:-1]:
-        items = l.split("\t")
-        dumper.append([items[2],items[1],items[4],items[3],items[5]])
+    for d in data:
+        profile_photo_file = get_file_name_for_entry(d) #extension
+        dumper.append([d[config.NAME_FIELD],d[config.EMAIL_FIELD],d[config.TWITTER_FIELD],d[config.DESCRIPTION_FIELD],profile_photo_file])
         if counter % 5 == 0:
             p = ProfilePage()
             p.run(dumper)

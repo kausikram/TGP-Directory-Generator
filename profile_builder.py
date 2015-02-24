@@ -11,20 +11,21 @@
 #!/usr/bin/env python
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
+import config
 
 NAME_COLOR = "#2BB673"
 BODY_COLOR = "#000000"
 
 PIX_CONVERTER = 12 #12dpmm
-MARGIN = 10
-BOX = 30
+MARGIN = 15 #15 10
+BOX = 50  #50 30
 
 class ProfilePage(object):
     def __init__(self):
-        self.img = Image.open("a5.png")
+        self.img = Image.open("a53.png")
         self.draw = ImageDraw.Draw(self.img)
         self.font = ImageFont.truetype("AbrilFatface-Regular.ttf", 14 * 300 / 72 )
-        self.font_body = ImageFont.truetype("Gotham-Book.ttf", 10 * 300 / 72 )
+        self.font_body = ImageFont.truetype("GothamMedium.otf", 10 * 300 / 72 )
 
     def run(self, lst):
         for i in enumerate(lst):
@@ -34,6 +35,7 @@ class ProfilePage(object):
         return mm * PIX_CONVERTER
 
     def draw_first(self,item, box_number):
+        print item[0]
         offset = box_number* BOX + (box_number+1) * MARGIN
         self.draw_image(item[4],self.get_pix(10),self.get_pix(offset))
         self.draw.text((self.get_pix(40),self.get_pix(offset)), item[0], fill=NAME_COLOR, font=self.font)
@@ -42,11 +44,11 @@ class ProfilePage(object):
         self.draw_multi_line(self.get_pix(40),self.get_pix(offset + 20),item[3])
 
     def save(self, page_number):
-        self.img.save("/home/kausikram/Projects/another_directory_generator/src/output/%s.png"%(page_number,))
+        self.img.save(config.OUTPUT_FOLDER + "/%s.png"%(page_number,))
 
     def draw_image(self,image,pos_x,pos_y):
         try:
-            profile_picture = Image.open("/home/kausikram/Projects/another_directory_generator/src/profile_pictures_old/%s"%(image,))
+            profile_picture = Image.open(config.PROFILE_PICTURE_FOLDER + "/%s"%(image,))
         except Exception, e:
             print image
             print e
